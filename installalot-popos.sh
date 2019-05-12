@@ -92,6 +92,7 @@ echo "Adding goodies.."
 
 # Tilix as default terminal
 gsettings set org.gnome.desktop.default-applications.terminal exec /usr/bin/tilix
+ln -s /etc/profile.d/vte-2.91.sh /etc/profile.d/vte.sh
 
 # Tilix Dark Theme
 gsettings set com.gexperts.Tilix.Settings theme-variant 'dark'
