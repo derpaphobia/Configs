@@ -21,11 +21,6 @@ sudo sed -i 's/WaylandEnable=false/# WaylandEnable=false/g' /etc/gdm3/custom.con
 mkdir sites
 cd /etc/NetworkManager/dispatcher.d && { sudo curl -O https://raw.githubusercontent.com/derpaphobia/Configs/master/90-mountsites ; cd ; }
 sudo chmod +x /etc/NetworkManager/dispatcher.d/90-mountsites
-curl -LJO https://raw.githubusercontent.com/derpaphobia/Configs/master/keybinds.pl
-curl -LJO https://raw.githubusercontent.com/derpaphobia/Configs/master/keys.csv
-sudo perl keybinds.pl -i keys.csv
-sudo chmod 777 keys.csv
-rm keys.csv
 
 echo "Updating packages..."
 sudo apt-get update -y
@@ -74,6 +69,11 @@ sudo snap install code --classic
 
 sleep 1
 
+echo "Making keybinds.."
+curl -LJO https://raw.githubusercontent.com/derpaphobia/Configs/master/keybinds.conf
+dconf load / < keybinds.conf
+rm keybinds.conf
+
 echo "Changing shell.."
 chsh -s $(which zsh)
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -98,6 +98,7 @@ ln -s /etc/profile.d/vte-2.91.sh /etc/profile.d/vte.sh
 gsettings set com.gexperts.Tilix.Settings theme-variant 'dark'
 curl -LJO https://raw.githubusercontent.com/derpaphobia/Configs/master/tilixderpa.conf
 dconf load /com/gexperts/Tilix/ < tilixderpa.conf
+rm tilixderpa.conf
 
 #Better Font Smoothing
 gsettings set org.gnome.settings-daemon.plugins.xsettings antialiasing 'rgba'
