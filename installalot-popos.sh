@@ -96,6 +96,8 @@ ln -s /etc/profile.d/vte-2.91.sh /etc/profile.d/vte.sh
 
 # Tilix Dark Theme
 gsettings set com.gexperts.Tilix.Settings theme-variant 'dark'
+curl -LJO https://raw.githubusercontent.com/derpaphobia/Configs/master/tilixderpa.conf
+dconf load /com/gexperts/Tilix/ < tilixderpa.conf
 
 #Better Font Smoothing
 gsettings set org.gnome.settings-daemon.plugins.xsettings antialiasing 'rgba'
