@@ -1,13 +1,18 @@
 #!/bin/bash
 # nm sets this values
+INTERFACE=$1
+ACTION=$2
 
-MYCON_UUID=50194c8b-16e2-44f3-a0a1-aa2655293c33
-MYCON_UUID2=45f963a7-5082-4157-8396-741b7cb3a40e
+SSID="Tjov5G"
+SSID2="Tjov"
+ESSID=`iwconfig $INTERFACE | grep ESSID | cut -d":" -f2 | sed 's/^[^"]*"\|"[^"]*$//g'`
 
-if [ "$CONNECTION_UUID" == "$MYCON_UUID" ] then
-	sudo mount -t cifs -o username=derpa,password=ananas35KAS,uid=1000,gid=1000 //192.168.1.88/mediashare/Sites /home/derpa/sites
-elif [ "$CONNECTION_UUID" == "$MYCON_UUID2" ] then
-	sudo mount -t cifs -o username=derpa,password=ananas35KAS,uid=1000,gid=1000 //192.168.1.88/mediashare/Sites /home/derpa/sites
+if [ "$INTERFACE" == "wlx501ac50e9426" ]; then
+  if [ "$SSID" == "$ESSID" ] && [ "$ACTION" == "up" ]; then
+    sudo mount -t cifs -o user=derpa -o password=ananas35KAS //192.168.1.88/mediashare/Sites /home/derpa/sites -o uid=1000 -o gid=1000
+  elif [ "$SSID2" == "$ESSID" ] && [ "$ACTION" == "up" ]; then
+    sudo mount -t cifs -o user=derpa -o password=ananas35KAS //192.168.1.88/mediashare/Sites /home/derpa/sites -o uid=1000 -o gid=1000
 else
-
+    sudo umount /home/derpa/sites
+  fi
 fi
