@@ -96,9 +96,6 @@ gsettings set org.gnome.desktop.default-applications.terminal exec /usr/bin/tili
 # Tilix Dark Theme
 gsettings set com.gexperts.Tilix.Settings theme-variant 'dark'
 
-#Set Extensions for gnome
-gsettings set org.gnome.shell enabled-extensions "['user-theme@gnome-shell-extensions.gcampax.github.com', 'TopIcons@phocean.net', 'dash-to-dock@micxgx.gmail.com']"
-
 #Better Font Smoothing
 gsettings set org.gnome.settings-daemon.plugins.xsettings antialiasing 'rgba'
 
