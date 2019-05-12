@@ -11,6 +11,7 @@ sudo add-apt-repository -y ppa:andreasbutti/xournalpp-master
 
 echo "Applying fixes.."
 gsettings set com.system76.hidpi enable false
+gsettings set org.gnome.desktop.interface clock-format 24h
 sudo sed -i 's/<FK21> = 199;/#<FK21> = 199;/g' /usr/share/X11/xkb/keycodes/evdev
 sudo sed -i 's/<FK22> = 200;/#<FK22> = 200;/g' /usr/share/X11/xkb/keycodes/evdev
 sudo sed -i 's/<FK23> = 201;/#<FK23> = 201;/g' /usr/share/X11/xkb/keycodes/evdev
