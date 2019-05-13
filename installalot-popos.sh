@@ -75,13 +75,6 @@ curl -LJO https://raw.githubusercontent.com/derpaphobia/Configs/master/keybinds.
 dconf load / < keybinds.conf
 rm keybinds.conf
 
-echo "Changing shell.."
-chsh -s $(which zsh)
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-curl -LSO https://raw.githubusercontent.com/derpaphobia/Configs/master/.zshrc
-source ~/.zshrc
-
 echo "Removing some stuff.."
 sudo apt-get remove totem chromium flowblade
 
@@ -117,6 +110,13 @@ gsettings set org.gnome.nautilus.icon-view default-zoom-level 'standard'
 gsettings set org.gnome.nautilus.preferences executable-text-activation 'ask'
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 gsettings set org.gnome.nautilus.list-view use-tree-view true
+
+echo "Changing shell.."
+chsh -s $(which zsh)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+curl -LSO https://raw.githubusercontent.com/derpaphobia/Configs/master/.zshrc
+source ~/.zshrc
 
 #The user needs to reboot to apply all changes.
 echo "Please Reboot" && exit 0
