@@ -31,35 +31,12 @@ sudo apt-get autoremove -y
 echo "Deleting apt cache.."
 sudo apt-get clean
 
-echo "Making /lib/systemd/system-sleep/sleep executable...\n"
-sudo chmod a+x /lib/systemd/system-sleep/sleep
-
-read -rp "Do you want to replace suspend with hibernate? (type yes or no) " usehibernate;echo
-
-if [ "$usehibernate" = "yes" ]; then
-	if [ "$LX_BASE" = "ubuntu" ] && [ 1 -eq "$(echo "${LX_VERSION} >= 17.10" | bc)" ]; then
-		echo "Using Hibernate instead of Suspend...\n"
-		sudo ln -sfb /lib/systemd/system/hibernate.target /etc/systemd/system/suspend.target && sudo ln -sfb /lib/systemd/system/systemd-hibernate.service /etc/systemd/system/systemd-suspend.service
-	else
-		echo "Using Hibernate instead of Suspend...\n"
-		sudo ln -sfb /usr/lib/systemd/system/hibernate.target /etc/systemd/system/suspend.target && sudo ln -sfb /usr/lib/systemd/system/systemd-hibernate.service /etc/systemd/system/systemd-suspend.service
-	fi
-else
-	echo "Not touching Suspend\n"
-fi
-
-read -rp "Do you want use the patched libwacom packages? (type yes or no) " uselibwacom;echo
-
-if [ "$uselibwacom" = "yes" ]; then
-	echo "Installing patched libwacom packages..."
-	    curl -LSO https://github.com/derpaphobia/Configs/raw/master/libwacom_0.32-surface-1_amd64.deb
-		sudo dpkg -i libwacom_0.32-surface-1_amd64.deb
-		sudo apt-mark hold libwacom
-		sudo rm libwacom_0.32-surface-1_amd64.deb
-else
-	echo "Not touching libwacom"
-fi
-
+echo "Installing patched libwacom packages..."
+curl -LSO https://github.com/derpaphobia/Configs/raw/master/libwacom_0.32-surface-1_amd64.deb
+sudo dpkg -i libwacom_0.32-surface-1_amd64.deb
+sudo apt-mark hold libwacom
+sudo rm libwacom_0.32-surface-1_amd64.deb
+		
 echo "Installing all your crap.."
 sudo apt-get -y install build-essential cmake qt5-default wget libxtst-dev libxinerama-dev libice-dev libxrandr-dev libavahi-compat-libdnssd-dev libcurl4-openssl-dev libssl-dev dh-make gnome-tweak-tool curl wget flatpak gnome-software-plugin-flatpak snapd exfat-utils ffmpeg gimp gimp-plugin-registry gnome-shell-extension-appindicator htop inkscape krita mpv nautilus-image-converter p7zip papirus-icon-theme tilix gitg nano zsh zsh-syntax-highlighting fortune-mod nautilus-nextcloud steam lutris fonts-firacode xournalpp gnome-shell-extension-no-annoyance barrier network-manager-openvpn-gnome discord nautilus-admin
 
@@ -118,5 +95,12 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 curl -LSO https://raw.githubusercontent.com/derpaphobia/Configs/master/.zshrc
 source ~/.zshrc
 
+read -rp "Do you want to reboot? (type yes or no) " doreboot;echo
+if [ "$doreboot" = "yes" ]; then
+	sudo reboot
+else
+	echo "WATAFAKMAAAAN, not rebooting even though you should.. stupid.."
+fi
 #The user needs to reboot to apply all changes.
 echo "Please Reboot" && exit 0
+
