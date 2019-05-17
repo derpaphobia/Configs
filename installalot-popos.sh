@@ -89,7 +89,6 @@ gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 gsettings set org.gnome.nautilus.list-view use-tree-view true
 
 echo "Changing shell.."
-chsh -s $(which zsh)
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 curl -LSO https://raw.githubusercontent.com/derpaphobia/Configs/master/.zshrc
@@ -97,9 +96,10 @@ source ~/.zshrc
 
 read -rp "Do you want to reboot? (type yes or no) " doreboot;echo
 if [ "$doreboot" = "yes" ]; then
-	sudo reboot
+	chsh -s $(which zsh) && sudo reboot
 else
 	echo "WATAFAKMAAAAN, not rebooting even though you should.. stupid.."
+	chsh -s $(which zsh)
 fi
 #The user needs to reboot to apply all changes.
 echo "Please Reboot" && exit 0
