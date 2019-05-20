@@ -17,6 +17,8 @@ sudo sed -i 's/<FK22> = 200;/#<FK22> = 200;/g' /usr/share/X11/xkb/keycodes/evdev
 sudo sed -i 's/<FK23> = 201;/#<FK23> = 201;/g' /usr/share/X11/xkb/keycodes/evdev
 sudo sed -i 's/#LidSwitchIgnoreInhibited=yes/LidSwitchIgnoreInhibited=no/g' /usr/share/X11/xkb/keycodes/evdev
 sudo sed -i 's/#HandleLidSwitch=suspend/HandleLidSwitch=ignore/g' /usr/share/X11/xkb/keycodes/evdev
+sudo sed -i 's/#LidSwitchIgnoreInhibited=yes/LidSwitchIgnoreInhibited=no/g' /etc/systemd/logind.conf
+sudo sed -i 's/#HandleLidSwitch=suspend/HandleLidSwitch=ignore/g' /etc/systemd/logind.conf
 sudo sed -i 's/WaylandEnable=false/# WaylandEnable=false/g' /etc/gdm3/custom.conf
 
 mkdir sites
