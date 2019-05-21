@@ -82,6 +82,29 @@ sudo touch /etc/initramfs-tools/conf.d/resume
 echo "RESUME=UUID=$uuid resume_offset=$offset" | sudo tee /etc/initramfs-tools/conf.d/resume > /dev/null
 sudo update-initramfs -u -k all
 
+sudo mkdir -p /etc/polkit-1/rules.d/ && sudo touch /etc/polkit-1/rules.d/85-suspend.rules  
+echo "polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.login1.suspend" ||
+        action.id == "org.freedesktop.login1.suspend-multiple-sessions" ||
+        action.id == "org.freedesktop.login1.hibernate" ||
+        action.id == "org.freedesktop.login1.hibernate-multiple-sessions")
+    {
+        return polkit.Result.YES;
+    }
+});" | sudo tee /etc/polkit-1/rules.d/85-suspend.rules > /dev/null
+
+sudo mkdir -p /var/lib/polkit-1/localauthority/50-local.d/ && sudo touch /var/lib/polkit-1/localauthority/50-local.d/50-enable-suspend-on-lockscreen.pkla
+echo "[Allow hibernation and suspending with lock screen]
+Identity=unix-user:*
+Action=org.freedesktop.login1.suspend;org.freedesktop.login1.suspend-multiple-sessions;org.freedesktop.login1.hibernate;org.freedesktop.login1.hibernate-multiple-sessions
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes" | sudo tee /var/lib/polkit-1/localauthority/50-local.d/50-enable-suspend-on-lockscreen.pkla > /dev/null
+
+
+
+
+
 
 ###
 # Theming and GNOME Options
