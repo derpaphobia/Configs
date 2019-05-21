@@ -109,6 +109,9 @@ ExecStartPost=-/bin/run-parts -v --reverse -a post /lib/systemd/system-sleep" | 
 
 sudo systemctl daemon-reload
 
+#Disables lockscreen on resume
+gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
+
 
 ###
 # Theming and GNOME Options
