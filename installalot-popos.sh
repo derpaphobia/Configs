@@ -75,6 +75,12 @@ sudo swapon /swapfile
 sudo sed -i '/cryptswap/s/^/# /' /etc/fstab
 sudo sed -i '/cryptswap/a/swapfile  none  swap  sw  0  0' /etc/fstab
 
+offset=$(sudo swap-offset /swapfile | grep -o 'resume offset = .*' | cut -d" " -f4-)
+uuid=$(sudo blkid -s UUID -o value /dev/sda3)
+sudo kernelstub -a "resume=UUID=$uuid resume_offset=$offset resumedelay=15"
+sudo touch /etc/initramfs-tools/conf.d/resume
+echo "RESUME=UUID=$uuid resume_offset=$offset" | sudo tee /etc/initramfs-tools/conf.d/resume > /dev/null
+sudo update-initramfs -u -k all
 
 
 ###
