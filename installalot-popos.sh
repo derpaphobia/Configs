@@ -116,6 +116,7 @@ gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
 sudo touch /etc/systemd/sleep.conf
 echo "[Sleep]
 HibernateDelaySec=3600" | sudo tee /etc/systemd/sleep.conf
+sudo ln -s /usr/lib/systemd/system/systemd-suspend-then-hibernate.service /etc/systemd/system/systemd-suspend.service
 
 ###
 # Theming and GNOME Options
