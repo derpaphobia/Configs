@@ -31,7 +31,6 @@ sudo chmod +x /etc/NetworkManager/dispatcher.d/90-mountsites
 echo "Updating packages..."
 sudo apt-get update -y
 sudo apt-get upgrade -y
-sudo apt-get autoremove -y
 
 echo "Deleting apt cache.."
 sudo apt-get clean
@@ -59,6 +58,7 @@ rm keybinds.conf
 
 echo "Removing some stuff.."
 sudo apt-get remove totem chromium flowblade
+sudo apt-get autoremove -y
 
 echo "Adding goodies.."
 
@@ -72,8 +72,8 @@ sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapoff -a
 sudo swapon /swapfile
-sudo sed -i 's/# dev/mapper/cryptswap  none  swap  defaults  0  0//dev/mapper/cryptswap  none  swap  defaults  0  0/g' /etc/fstab
-sudo sed -i '/swapfile  none  swap  sw  0  0' /etc/fstab
+sudo sed -i '/cryptswap/s/^/# /' /etc/fstab
+sudo sed -i '/cryptswap/a/swapfile  none  swap  sw  0  0' /etc/fstab
 
 
 
