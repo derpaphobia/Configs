@@ -63,6 +63,21 @@ sudo apt-get remove totem chromium flowblade
 echo "Adding goodies.."
 
 ###
+# Adding Hibernate
+###
+
+sudo swapoff -a
+sudo dd if=/dev/zero of=/swapfile bs=1024 count=16M
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapoff -a
+sudo swapon /swapfile
+sudo sed -i 's/# dev/mapper/cryptswap  none  swap  defaults  0  0//dev/mapper/cryptswap  none  swap  defaults  0  0/g' /etc/fstab
+sudo sed -i '/swapfile  none  swap  sw  0  0' /etc/fstab
+
+
+
+###
 # Theming and GNOME Options
 ###
 
