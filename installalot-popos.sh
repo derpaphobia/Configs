@@ -101,9 +101,13 @@ ResultAny=yes
 ResultInactive=yes
 ResultActive=yes" | sudo tee /var/lib/polkit-1/localauthority/50-local.d/50-enable-suspend-on-lockscreen.pkla > /dev/null
 
+echo -e "[Service]                           
+ExecStart=
+ExecStartPre=-/bin/run-parts -v -a pre /lib/systemd/system-sleep
+ExecStart=/usr/sbin/s2disk
+ExecStartPost=-/bin/run-parts -v --reverse -a post /lib/systemd/system-sleep" | sudo SYSTEMD_EDITOR=tee systemctl edit systemd-hibernate.service > /dev/null
 
-
-
+sudo systemctl daemon-reload
 
 
 ###
