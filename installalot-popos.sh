@@ -112,6 +112,10 @@ sudo systemctl daemon-reload
 #Disables lockscreen on resume
 gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
 
+#Activate Suspend-then-Hibernate
+sudo touch /etc/systemd/sleep.conf
+echo "[Sleep]
+HibernateDelaySec=3600" | sudo tee /etc/systemd/sleep.conf
 
 ###
 # Theming and GNOME Options
