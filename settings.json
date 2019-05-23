@@ -1,0 +1,16 @@
+{
+    "workbench.colorTheme": "Monokai Pro (Filter Ristretto)",
+    "workbench.iconTheme": "material-icon-theme",
+    "sublimeTextKeymap.promptV3Features": true,
+    "editor.multiCursorModifier":"ctrlCmd",
+    "editor.snippetSuggestions": "top",
+    "editor.formatOnPaste": true,
+    "editor.minimap.enabled": false,
+    "workbench.statusBar.visible": false,
+    "editor.fontSize": 16,
+    "editor.lineHeight": 26,
+    "editor.letterSpacing": 1,
+    "editor.fontLigatures": true,
+    "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "window.zoomLevel": 0,
+}
