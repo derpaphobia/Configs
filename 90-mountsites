@@ -9,9 +9,9 @@ ESSID=`iwconfig $INTERFACE | grep ESSID | cut -d":" -f2 | sed 's/^[^"]*"\|"[^"]*
 
 if [ "$INTERFACE" == "wlx501ac50e9426" ]; then
   if [ "$SSID" == "$ESSID" ] && [ "$ACTION" == "up" ]; then
-    sudo mount -t cifs -o user=derpa -o password=ananas35KAS //192.168.1.88/mediashare/Sites /home/derpa/sites -o uid=1000 -o gid=1000
+    sudo mount -t cifs -o user=derpa -o password=ananas35KAS //192.168.1.88/mediashare/Sites ~/sites -o uid=1000 -o gid=1000
   elif [ "$SSID2" == "$ESSID" ] && [ "$ACTION" == "up" ]; then
-    sudo mount -t cifs -o user=derpa -o password=ananas35KAS //192.168.1.88/mediashare/Sites /home/derpa/sites -o uid=1000 -o gid=1000
+    sudo mount -t cifs -o user=derpa -o password=ananas35KAS //192.168.1.88/mediashare/Sites ~/sites -o uid=1000 -o gid=1000
 else
     sudo umount /home/derpa/sites
   fi
