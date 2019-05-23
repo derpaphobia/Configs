@@ -1,18 +1,9 @@
 #!/bin/bash
-# nm sets this values
-INTERFACE=$1
-ACTION=$2
-
 SSID="Tjov5G"
 SSID2="Tjov"
-ESSID=`iwconfig $INTERFACE | grep ESSID | cut -d":" -f2 | sed 's/^[^"]*"\|"[^"]*$//g'`
+ESSID=`iw wlx501ac50e9426 link | grep SSID | cut -d" " -f2`
 
-if [ "$INTERFACE" == "wlx501ac50e9426" ]; then
-  if [ "$SSID" == "$ESSID" ] && [ "$ACTION" == "up" ]; then
-    sudo mount -t cifs -o user=derpa -o password=ananas35KAS //192.168.1.88/mediashare/Sites ~/sites -o uid=1000 -o gid=1000
-  elif [ "$SSID2" == "$ESSID" ] && [ "$ACTION" == "up" ]; then
-    sudo mount -t cifs -o user=derpa -o password=ananas35KAS //192.168.1.88/mediashare/Sites ~/sites -o uid=1000 -o gid=1000
-else
-    sudo umount /home/derpa/sites
-  fi
+if [[ $1 == "wlx501ac50e9426" && $2 == up && ( $ESSID == $SSID || $ESSID == $SSID2 ) ]$
+sudo umount /home/derpa/sites/
+sudo mount -t cifs -o guest //192.168.1.88/mediashare/Sites/ /home/derpa/sites -o uid=$
 fi
