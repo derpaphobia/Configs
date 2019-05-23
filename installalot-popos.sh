@@ -79,8 +79,8 @@ sudo /etc/init.d/apache2 stop
 sudo apt-get remove -yqq apache2
 valet install
 ###
-systemctl enable NetworkManager-dispatcher.service
-systemctl start NetworkManager-dispatcher.service
+# systemctl enable NetworkManager-dispatcher.service
+# systemctl start NetworkManager-dispatcher.service
 mkdir sites
 cd /etc/NetworkManager/dispatcher.d && { sudo curl -O https://raw.githubusercontent.com/derpaphobia/Configs/master/90-mountsites ; cd ; }
 sudo chmod 755 /etc/NetworkManager/dispatcher.d/90-mountsites
