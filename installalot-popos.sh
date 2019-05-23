@@ -78,9 +78,13 @@ sudo bash -c "echo extension=/usr/lib/php/20170718/mcrypt.so > /etc/php/7.2/apac
 sudo /etc/init.d/apache2 stop
 sudo apt-get remove -yqq apache2
 valet install
+###
+systemctl enable NetworkManager-dispatcher.service
+systemctl start NetworkManager-dispatcher.service
 mkdir sites
 cd /etc/NetworkManager/dispatcher.d && { sudo curl -O https://raw.githubusercontent.com/derpaphobia/Configs/master/90-mountsites ; cd ; }
-sudo chmod +x /etc/NetworkManager/dispatcher.d/90-mountsites
+sudo chmod 755 /etc/NetworkManager/dispatcher.d/90-mountsites
+sudo chown root:root /etc/NetworkManager/dispatcher.d/90-mountsites
 cd sites
 valet park
 cd ~
