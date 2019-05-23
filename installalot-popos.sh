@@ -42,7 +42,7 @@ sudo apt-mark hold libwacom
 sudo rm libwacom_0.32-surface-1_amd64.deb
 		
 echo "Installing all your crap.."
-sudo apt-get -y install build-essential cmake qt5-default wget libxtst-dev libxinerama-dev libice-dev libxrandr-dev libavahi-compat-libdnssd-dev libcurl4-openssl-dev libssl-dev dh-make gnome-tweak-tool curl wget flatpak gnome-software-plugin-flatpak snapd exfat-utils ffmpeg gimp gimp-plugin-registry gnome-shell-extension-appindicator htop inkscape krita mpv nautilus-image-converter p7zip papirus-icon-theme tilix gitg nano zsh zsh-syntax-highlighting fortune-mod nautilus-nextcloud steam lutris fonts-firacode xournalpp gnome-shell-extension-no-annoyance barrier network-manager-openvpn-gnome discord nautilus-admin uswsusp
+sudo apt-get -y install build-essential cmake qt5-default wget libxtst-dev libxinerama-dev libice-dev libxrandr-dev libavahi-compat-libdnssd-dev libcurl4-openssl-dev libssl-dev dh-make gnome-tweak-tool curl wget flatpak gnome-software-plugin-flatpak snapd exfat-utils ffmpeg gimp gimp-plugin-registry gnome-shell-extension-appindicator htop inkscape krita mpv nautilus-image-converter p7zip papirus-icon-theme tilix gitg nano zsh zsh-syntax-highlighting fortune-mod nautilus-nextcloud steam lutris fonts-firacode xournalpp gnome-shell-extension-no-annoyance barrier network-manager-openvpn-gnome discord nautilus-admin uswsusp php
 
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
@@ -61,6 +61,22 @@ sudo apt-get remove totem chromium flowblade
 sudo apt-get autoremove -y
 
 echo "Adding goodies.."
+
+###
+# VsCode config
+###
+curl -LSO https://raw.githubusercontent.com/derpaphobia/Configs/master/settings.json
+mv -f settings.json ~/.config/Code/User/settings.json
+
+###
+# Setup Valet Linux
+###
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+
+
 
 ###
 # Adding Hibernate
