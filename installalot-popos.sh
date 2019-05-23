@@ -23,11 +23,6 @@ sudo sed -i 's/WaylandEnable=false/# WaylandEnable=false/g' /etc/gdm3/custom.con
 sudo sed -i 's/AutoEnable=true/AutoEnable=false/g' /etc/bluetooth/main.conf
 
 
-
-mkdir sites
-cd /etc/NetworkManager/dispatcher.d && { sudo curl -O https://raw.githubusercontent.com/derpaphobia/Configs/master/90-mountsites ; cd ; }
-sudo chmod +x /etc/NetworkManager/dispatcher.d/90-mountsites
-
 echo "Updating packages..."
 sudo apt-get update -y
 sudo apt-get upgrade -y
@@ -42,7 +37,7 @@ sudo apt-mark hold libwacom
 sudo rm libwacom_0.32-surface-1_amd64.deb
 		
 echo "Installing all your crap.."
-sudo apt-get -y install build-essential cmake qt5-default wget libxtst-dev libxinerama-dev libice-dev libxrandr-dev libavahi-compat-libdnssd-dev libcurl4-openssl-dev libssl-dev dh-make gnome-tweak-tool curl wget flatpak gnome-software-plugin-flatpak snapd exfat-utils ffmpeg gimp gimp-plugin-registry gnome-shell-extension-appindicator htop inkscape krita mpv nautilus-image-converter p7zip papirus-icon-theme tilix gitg nano zsh zsh-syntax-highlighting fortune-mod nautilus-nextcloud steam lutris fonts-firacode xournalpp gnome-shell-extension-no-annoyance barrier network-manager-openvpn-gnome discord nautilus-admin uswsusp php
+sudo apt-get -yqq install build-essential cmake qt5-default wget libxtst-dev libxinerama-dev libice-dev libxrandr-dev libavahi-compat-libdnssd-dev libcurl4-openssl-dev libssl-dev dh-make gnome-tweak-tool curl wget flatpak gnome-software-plugin-flatpak snapd exfat-utils ffmpeg gimp gimp-plugin-registry gnome-shell-extension-appindicator htop inkscape krita mpv nautilus-image-converter p7zip papirus-icon-theme tilix gitg nano zsh zsh-syntax-highlighting fortune-mod nautilus-nextcloud steam lutris fonts-firacode xournalpp gnome-shell-extension-no-annoyance barrier network-manager-openvpn-gnome discord nautilus-admin uswsusp php nodejs npm network-manager libnss3-tools jq xsel php-pear php7.2-dev php7.2-curl php7.2-zip php7.2-sqlite3 php7.2-mysql php7.2-pgsql libmcrypt-dev libreadline-dev cifs-utils 
 
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
@@ -69,14 +64,26 @@ curl -LSO https://raw.githubusercontent.com/derpaphobia/Configs/master/settings.
 mv -f settings.json ~/.config/Code/User/settings.json
 
 ###
-# Setup Valet Linux
+# Setup Composer, Valet Linux, MariaDB and setup sites folder
 ###
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php -r "if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
-
-
+sudo mv composer.phar /usr/local/bin/composer
+composer global require cpriego/valet-linux
+sudo pecl install mcrypt-1.0.1
+sudo bash -c "echo extension=/usr/lib/php/20170718/mcrypt.so > /etc/php/7.2/cli/conf.d/mcrypt.ini"
+sudo bash -c "echo extension=/usr/lib/php/20170718/mcrypt.so > /etc/php/7.2/apache2/conf.d/mcrypt.ini"
+sudo /etc/init.d/apache2 stop
+sudo apt-get remove -yqq apache2
+valet install
+mkdir sites
+cd /etc/NetworkManager/dispatcher.d && { sudo curl -O https://raw.githubusercontent.com/derpaphobia/Configs/master/90-mountsites ; cd ; }
+sudo chmod +x /etc/NetworkManager/dispatcher.d/90-mountsites
+cd sites
+valet park
+cd ~
 
 ###
 # Adding Hibernate
