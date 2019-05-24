@@ -176,8 +176,11 @@ gsettings set org.gnome.nautilus.preferences executable-text-activation 'ask'
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 gsettings set org.gnome.nautilus.list-view use-tree-view true
 
-# Cleaning apt cache
+###
+# Cleaning apt cache and removing /Configs folder
+###
 sudo apt-get clean
+sudo rm -r ~/Configs
 
 ###
 # Installing oh-my-zsh and changing shell to zsh
