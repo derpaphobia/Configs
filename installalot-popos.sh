@@ -5,11 +5,15 @@ if [ $(id -u) = 0 ]; then
    exit 1
 fi
 
-echo "Adding repos.."
-sudo add-apt-repository universe
-sudo add-apt-repository -y ppa:andreasbutti/xournalpp-master
+###
+# Cloning git repo
+###
+git clone https://github.com/derpaphobia/Configs
 
-echo "Applying fixes.."
+###
+# Various Surface pro 2 fixes for linux
+###
+
 gsettings set com.system76.hidpi enable false
 gsettings set org.gnome.desktop.interface clock-format 24h
 sudo sed -i 's/<FK21> = 199;/#<FK21> = 199;/g' /usr/share/X11/xkb/keycodes/evdev
@@ -21,51 +25,29 @@ sudo sed -i 's/#LidSwitchIgnoreInhibited=yes/LidSwitchIgnoreInhibited=no/g' /etc
 sudo sed -i 's/#HandleLidSwitch=suspend/HandleLidSwitch=ignore/g' /etc/systemd/logind.conf
 sudo sed -i 's/WaylandEnable=false/# WaylandEnable=false/g' /etc/gdm3/custom.conf
 sudo sed -i 's/AutoEnable=true/AutoEnable=false/g' /etc/bluetooth/main.conf
+sudo dpkg -i ~/Configs/resources/packages/libwacom_0.32-surface-1_amd64.deb
+sudo apt-mark hold libwacom
 
+###
+# Updating
+###
 
-echo "Updating packages..."
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
-echo "Deleting apt cache.."
-sudo apt-get clean
+###
+# Installing apps and adding repos..
+###
 
-echo "Installing patched libwacom packages..."
-curl -LSO https://github.com/derpaphobia/Configs/raw/master/libwacom_0.32-surface-1_amd64.deb
-sudo dpkg -i libwacom_0.32-surface-1_amd64.deb
-sudo apt-mark hold libwacom
-sudo rm libwacom_0.32-surface-1_amd64.deb
-		
-echo "Installing all your crap.."
+sudo add-apt-repository -y ppa:andreasbutti/xournalpp-master
 sudo apt-get -yqq install build-essential cmake qt5-default wget libxtst-dev libxinerama-dev libice-dev libxrandr-dev libavahi-compat-libdnssd-dev libcurl4-openssl-dev libssl-dev dh-make gnome-tweak-tool curl wget flatpak gnome-software-plugin-flatpak snapd exfat-utils ffmpeg gimp gimp-plugin-registry gnome-shell-extension-appindicator htop inkscape krita mpv nautilus-image-converter p7zip papirus-icon-theme tilix gitg nano zsh zsh-syntax-highlighting fortune-mod nautilus-nextcloud steam lutris fonts-firacode xournalpp gnome-shell-extension-no-annoyance barrier network-manager-openvpn-gnome discord nautilus-admin uswsusp php nodejs npm network-manager libnss3-tools jq xsel php-pear php7.2-dev php7.2-curl php7.2-zip php7.2-sqlite3 php7.2-mysql php7.2-pgsql libmcrypt-dev libreadline-dev cifs-utils 
-
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
 sudo snap install spotify
 sudo snap install code --classic
 
 sleep 1
 
-echo "Making keybinds.."
-curl -LJO https://raw.githubusercontent.com/derpaphobia/Configs/master/keybinds.conf
-dconf load / < keybinds.conf
-rm keybinds.conf
-
-echo "Removing some stuff.."
-sudo apt-get remove totem chromium flowblade
-sudo apt-get autoremove -y
-
-echo "Adding goodies.."
-
-###
-# VsCode config
-###
-curl -LSO https://raw.githubusercontent.com/derpaphobia/Configs/master/settings.json
-mv -f settings.json ~/.config/Code/User/settings.json
-
-###
 # Setup Composer, Valet Linux, MariaDB and setup sites folder
-###
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php -r "if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 php composer-setup.php
@@ -82,12 +64,30 @@ valet install
 # systemctl enable NetworkManager-dispatcher.service
 # systemctl start NetworkManager-dispatcher.service
 mkdir sites
-cd /etc/NetworkManager/dispatcher.d && { sudo curl -O https://raw.githubusercontent.com/derpaphobia/Configs/master/90-mountsites ; cd ; }
+sudo mv -f ~/Configs/resources/scripts/90-mountsites /etc/NetworkManager/dispatcher.d
+cd  && { sudo curl -O https://raw.githubusercontent.com/derpaphobia/Configs/master/90-mountsites ; cd ; }
 sudo chmod 755 /etc/NetworkManager/dispatcher.d/90-mountsites
 sudo chown root:root /etc/NetworkManager/dispatcher.d/90-mountsites
 cd sites
 valet park
 cd ~
+
+# Removing totem videoplayer since Mpv got installed
+sudo apt-get remove totem
+sudo apt-get autoremove -y
+
+###
+# Adding my own configs
+###
+
+# Keybinds
+dconf load / < ~/Configs/resources/configfiles/keybinds.conf
+
+# VsCode
+sudo mv -f ~/Configs/resources/configfiles/settings.json ~/.config/Code/User/settings.json
+
+# .zshrc
+sudo mv -f ~/Configs/resources/configfiles/.zshrc ~/.zshrc
 
 ###
 # Adding Hibernate
@@ -136,9 +136,6 @@ ExecStartPost=-/bin/run-parts -v --reverse -a post /lib/systemd/system-sleep" | 
 
 sudo systemctl daemon-reload
 
-#Disables lockscreen on resume
-gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
-
 #Activate Suspend-then-Hibernate
 sudo touch /etc/systemd/sleep.conf
 echo "[Sleep]
@@ -149,20 +146,21 @@ sudo ln -s /usr/lib/systemd/system/systemd-suspend-then-hibernate.service /etc/s
 # Theming and GNOME Options
 ###
 
+# Disables lockscreen on resume
+gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
+
 # Tilix as default terminal
 gsettings set org.gnome.desktop.default-applications.terminal exec /usr/bin/tilix
 sudo ln -s /etc/profile.d/vte-2.91.sh /etc/profile.d/vte.sh
 
 # Tilix Dark Theme
 gsettings set com.gexperts.Tilix.Settings theme-variant 'dark'
-curl -LJO https://raw.githubusercontent.com/derpaphobia/Configs/master/tilixderpa.conf
-dconf load /com/gexperts/Tilix/ < tilixderpa.conf
-rm tilixderpa.conf
+dconf load /com/gexperts/Tilix/ < ~/Configs/resources/configfiles/tilixderpa.conf
 
-#Better Font Smoothing
+# Better Font Smoothing
 gsettings set org.gnome.settings-daemon.plugins.xsettings antialiasing 'rgba'
 
-#Usability Improvements
+# Usability Improvements
 gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'adaptive'
 gsettings set org.gnome.desktop.sound allow-volume-above-100-percent true
 gsettings set org.gnome.desktop.calendar show-weekdate true
@@ -172,24 +170,18 @@ gsettings set org.gnome.shell.overrides workspaces-only-on-primary false
 gsettings set org.gnome.desktop.interface gtk-theme "Pop-slim-dark"
 gsettings set org.gnome.desktop.interface text-scaling-factor 1.3
 
-#Nautilus (File Manager) Usability
+# Nautilus (File Manager) Usability
 gsettings set org.gnome.nautilus.icon-view default-zoom-level 'standard'
 gsettings set org.gnome.nautilus.preferences executable-text-activation 'ask'
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 gsettings set org.gnome.nautilus.list-view use-tree-view true
 
-echo "Changing shell.."
+# Cleaning apt cache
+sudo apt-get clean
+
+###
+# Installing oh-my-zsh and changing shell to zsh
+###
+
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-curl -LSO https://raw.githubusercontent.com/derpaphobia/Configs/master/.zshrc
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && chsh -s $(which zsh)
-
-read -rp "Do you want to reboot? (type yes or no) " doreboot;echo
-if [ "$doreboot" = "yes" ]; then
-	chsh -s $(which zsh) && sudo reboot
-else
-	echo "WATAFAKMAAAAN, not rebooting even though you should.. stupid.."
-	chsh -s $(which zsh)
-fi
-#The user needs to reboot to apply all changes.
-echo "Please Reboot" && exit 0
-
