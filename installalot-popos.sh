@@ -5,10 +5,12 @@ if [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+
 ###
 # Cloning git repo
 ###
 git clone https://github.com/derpaphobia/Configs
+
 
 ###
 # Various Surface pro 2 fixes for linux
@@ -26,12 +28,14 @@ sudo sed -i 's/AutoEnable=true/AutoEnable=false/g' /etc/bluetooth/main.conf
 sudo dpkg -i ~/Configs/resources/packages/libwacom_0.32-surface-1_amd64.deb
 sudo apt-mark hold libwacom
 
+
 ###
 # Updating
 ###
 
 sudo apt-get update -y
 sudo apt-get upgrade -y
+
 
 ###
 # Installing apps and adding repos..
@@ -58,9 +62,8 @@ sudo bash -c "echo extension=/usr/lib/php/20170718/mcrypt.so > /etc/php/7.2/apac
 sudo /etc/init.d/apache2 stop
 sudo apt-get remove -yqq apache2
 valet install
-###
-# systemctl enable NetworkManager-dispatcher.service
-# systemctl start NetworkManager-dispatcher.service
+
+# Setting up sites directiory with script to mount network share when conected to home wifi and parking valet
 mkdir sites
 sudo mv -f ~/Configs/resources/scripts/90-mountsites /etc/NetworkManager/dispatcher.d
 cd  && { sudo curl -O https://raw.githubusercontent.com/derpaphobia/Configs/master/90-mountsites ; cd ; }
@@ -73,6 +76,7 @@ cd ~
 # Removing totem videoplayer since Mpv got installed
 sudo apt-get remove totem
 sudo apt-get autoremove -y
+
 
 ###
 # Adding my own configs
@@ -87,10 +91,12 @@ sudo mv -f ~/Configs/resources/configfiles/settings.json ~/.config/Code/User/set
 # .zshrc
 sudo mv -f ~/Configs/resources/configfiles/.zshrc ~/.zshrc
 
+
 ###
 # Adding Hibernate
 ###
 
+# Creating swap
 sudo swapoff -a
 sudo dd if=/dev/zero of=/swapfile bs=1024 count=16M
 sudo chmod 600 /swapfile
@@ -100,6 +106,7 @@ sudo swapon /swapfile
 sudo sed -i '/cryptswap/s/^/# /' /etc/fstab
 sudo sed -i '/cryptswap/a/swapfile  none  swap  sw  0  0' /etc/fstab
 
+# Adding swap to boot options
 offset=$(sudo swap-offset /swapfile | grep -o 'resume offset = .*' | cut -d" " -f4-)
 uuid=$(sudo blkid -s UUID -o value /dev/sda3)
 sudo kernelstub -a "resume=UUID=$uuid resume_offset=$offset resumedelay=15"
@@ -107,6 +114,7 @@ sudo touch /etc/initramfs-tools/conf.d/resume
 echo "RESUME=UUID=$uuid resume_offset=$offset" | sudo tee /etc/initramfs-tools/conf.d/resume > /dev/null
 sudo update-initramfs -u -k all
 
+# Allow hibernation and suspending with lock screen
 sudo mkdir -p /etc/polkit-1/rules.d/ && sudo touch /etc/polkit-1/rules.d/85-suspend.rules  
 echo "polkit.addRule(function(action, subject) {
     if (action.id == "org.freedesktop.login1.suspend" ||
@@ -118,14 +126,7 @@ echo "polkit.addRule(function(action, subject) {
     }
 });" | sudo tee /etc/polkit-1/rules.d/85-suspend.rules > /dev/null
 
-sudo mkdir -p /var/lib/polkit-1/localauthority/50-local.d/ && sudo touch /var/lib/polkit-1/localauthority/50-local.d/50-enable-suspend-on-lockscreen.pkla
-echo "[Allow hibernation and suspending with lock screen]
-Identity=unix-user:*
-Action=org.freedesktop.login1.suspend;org.freedesktop.login1.suspend-multiple-sessions;org.freedesktop.login1.hibernate;org.freedesktop.login1.hibernate-multiple-sessions
-ResultAny=yes
-ResultInactive=yes
-ResultActive=yes" | sudo tee /var/lib/polkit-1/localauthority/50-local.d/50-enable-suspend-on-lockscreen.pkla > /dev/null
-
+# Changing stock hibernate to use s2disk from uswsusp instead
 echo -e "[Service]                           
 ExecStart=
 ExecStartPre=-/bin/run-parts -v -a pre /lib/systemd/system-sleep
@@ -134,11 +135,12 @@ ExecStartPost=-/bin/run-parts -v --reverse -a post /lib/systemd/system-sleep" | 
 
 sudo systemctl daemon-reload
 
-#Activate Suspend-then-Hibernate
+# Activate Suspend-then-Hibernate
 sudo touch /etc/systemd/sleep.conf
 echo "[Sleep]
 HibernateDelaySec=3600" | sudo tee /etc/systemd/sleep.conf
 sudo ln -s /usr/lib/systemd/system/systemd-suspend-then-hibernate.service /etc/systemd/system/systemd-suspend.service
+
 
 ###
 # Theming and GNOME Options
@@ -176,11 +178,13 @@ gsettings set org.gnome.nautilus.preferences executable-text-activation 'ask'
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 gsettings set org.gnome.nautilus.list-view use-tree-view true
 
+
 ###
 # Cleaning apt cache and removing /Configs folder
 ###
 sudo apt-get clean
 sudo rm -r ~/Configs
+
 
 ###
 # Installing oh-my-zsh and changing shell to zsh
