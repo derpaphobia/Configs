@@ -14,8 +14,6 @@ git clone https://github.com/derpaphobia/Configs
 # Various Surface pro 2 fixes for linux
 ###
 
-gsettings set com.system76.hidpi enable false
-gsettings set org.gnome.desktop.interface clock-format 24h
 sudo sed -i 's/<FK21> = 199;/#<FK21> = 199;/g' /usr/share/X11/xkb/keycodes/evdev
 sudo sed -i 's/<FK22> = 200;/#<FK22> = 200;/g' /usr/share/X11/xkb/keycodes/evdev
 sudo sed -i 's/<FK23> = 201;/#<FK23> = 201;/g' /usr/share/X11/xkb/keycodes/evdev
@@ -161,6 +159,8 @@ dconf load /com/gexperts/Tilix/ < ~/Configs/resources/configfiles/tilixderpa.con
 gsettings set org.gnome.settings-daemon.plugins.xsettings antialiasing 'rgba'
 
 # Usability Improvements
+gsettings set com.system76.hidpi enable false
+gsettings set org.gnome.desktop.interface clock-format 24h
 gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'adaptive'
 gsettings set org.gnome.desktop.sound allow-volume-above-100-percent true
 gsettings set org.gnome.desktop.calendar show-weekdate true
