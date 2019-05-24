@@ -182,6 +182,7 @@ gsettings set org.gnome.nautilus.list-view use-tree-view true
 ###
 # Cleaning apt cache and removing /Configs folder
 ###
+
 sudo apt-get clean
 sudo rm -r ~/Configs
 
