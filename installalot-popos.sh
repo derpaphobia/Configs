@@ -63,6 +63,13 @@ sudo /etc/init.d/apache2 stop
 sudo apt-get remove -yqq apache2
 valet install
 
+# Setup WP-cli and laravel
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+php wp-cli.phar --info
+chmod +x wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
+composer global require laravel/installer
+
 # Setting up sites directiory with script to mount network share when conected to home wifi and parking valet
 mkdir sites
 sudo mv -f ~/Configs/resources/scripts/90-mountsites /etc/NetworkManager/dispatcher.d
