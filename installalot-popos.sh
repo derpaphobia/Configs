@@ -80,6 +80,9 @@ cd sites
 valet park
 cd ~
 
+# Installing trash-cli
+sudo npm install --global trash-cli
+
 # Removing totem videoplayer since Mpv got installed
 sudo apt-get remove totem
 sudo apt-get autoremove -y
