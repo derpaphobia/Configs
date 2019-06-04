@@ -25,6 +25,7 @@ sudo sed -i 's/#LidSwitchIgnoreInhibited=yes/LidSwitchIgnoreInhibited=no/g' /etc
 sudo sed -i 's/#HandleLidSwitch=suspend/HandleLidSwitch=ignore/g' /etc/systemd/logind.conf
 sudo sed -i 's/WaylandEnable=false/# WaylandEnable=false/g' /etc/gdm3/custom.conf
 sudo sed -i 's/AutoEnable=true/AutoEnable=false/g' /etc/bluetooth/main.conf
+sudo sed -i '$a MOZ_USE_XINPUT2 DEFAULT=1' /etc/security/pam_env.conf
 sudo dpkg -i ~/Configs/resources/packages/libwacom_0.32-surface-1_amd64.deb
 sudo apt-mark hold libwacom
 
