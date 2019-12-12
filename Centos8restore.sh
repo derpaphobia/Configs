@@ -48,10 +48,16 @@ sleep 1
 ###
 
 sudo curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo
-sudo dnf install -y docker nano epel-release wireguard-dkms wireguard-tools samba
+sudo dnf install -y docker nano epel-release wireguard-dkms wireguard-tools samba wget
 
 sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
+
+###
+# Samba shares
+###
+wget https://raw.githubusercontent.com/derpaphobia/Configs/master/server/smb.conf
+sudo mv smb.conf /etc/samba/smb.conf
 
 
 echo "DO NOT FORGET, put Integrity Wireguard file in /etc/wireguard then run sudo wg-quick up integrity_vpn & sudo systemctl enable wg-quick@integrity_vpn"
