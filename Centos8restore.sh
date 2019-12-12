@@ -24,7 +24,12 @@ sudo dnf install -y docker nano epel-release wireguard-dkms wireguard-tools
 sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
+###
+# Fixing/mapping/formattings drives
+###
 
+sdbuuid=$(sudo blkid -s UUID -o value /dev/sdb)
+sdauuid=$(sudo blkid -s UUID -o value /dev/sda)
 
 sleep 1
 
