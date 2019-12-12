@@ -61,3 +61,4 @@ sudo mv smb.conf /etc/samba/smb.conf
 
 
 echo "DO NOT FORGET, put Integrity Wireguard file in /etc/wireguard then run sudo wg-quick up integrity_vpn & sudo systemctl enable wg-quick@integrity_vpn"
+echo "DO NOT FORGET, set samba password with sudo smbpasswd -a <user_name>"
