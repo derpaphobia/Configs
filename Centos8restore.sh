@@ -108,4 +108,5 @@ sudo echo "/usr/bin/clamscan -i -r /home >> /home/derpa/ClamAV-logs/daily_scan.l
 ######
 echo "DO NOT FORGET, put Integrity Wireguard file in /etc/wireguard then run sudo wg-quick up integrity_vpn & sudo systemctl enable wg-quick@integrity_vpn"
 echo "DO NOT FORGET, set samba password with sudo smbpasswd -a <user_name>"
-echo "ALSO NO FORGETTI DE SPAGHETTI A LA docker-compose up -d
+echo "ALSO NO FORGETTI DE SPAGHETTI A LA docker-compose up -d"
+echo "BUTTER FIRST, LE REBOOOOTAAAAAA!!!!"
