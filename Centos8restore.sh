@@ -20,6 +20,12 @@ sudo sed -i 's/swap rhgb quiet/swap rhgb quiet radeon.dpm=0/' /etc/default/grub
 sudo grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
 
 ###
+# SeLinux Permissive
+###
+sudo sed 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+
+
+###
 # Fixing/mapping/formatting drives
 ###
 
@@ -59,6 +65,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 wget https://raw.githubusercontent.com/derpaphobia/Configs/master/server/smb.conf
 sudo mv smb.conf /etc/samba/smb.conf
 sudo chown root:root /etc/samba/smb.conf
+sudo systemctl enable --now {smb,nmb}
+sudo systemctl restart --now {smb,nmb}
 
 echo "DO NOT FORGET, put Integrity Wireguard file in /etc/wireguard then run sudo wg-quick up integrity_vpn & sudo systemctl enable wg-quick@integrity_vpn"
 echo "DO NOT FORGET, set samba password with sudo smbpasswd -a <user_name>"
