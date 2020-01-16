@@ -103,7 +103,27 @@ touch /home/derpa/ClamAV-logs/daily-scans.log
 sudo freshclam
 sudo echo "/usr/bin/clamscan -i -r /home >> /home/derpa/ClamAV-logs/daily_scan.log" | sudo tee -a /etc/cron.daily/daily_scan
 
+###
+# Docker rules
+###
+sudo firewall-cmd --permanent --zone=trusted --change-interface=docker0
+sudo firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 4 -i docker0 -j ACCEPT
+sudo firewall-cmd --permanent --zone=trusted --add-port=80/tcp
+sudo firewall-cmd --permanent --zone=trusted --add-port=8080/tcp
+sudo firewall-cmd --permanent --zone=trusted --add-port=9000-9013/tcp
+sudo firewall-cmd --permanent --zone=trusted --add-port=3306/tcp
+sudo firewall-cmd --reload
+sudo service docker restart
 
+# fix for linux hosts - docker
+HOST_DOMAIN="host.docker.internal"
+ping -q -c1 $HOST_DOMAIN > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  HOST_IP=$(ip route | awk 'NR==1 {print $3}')
+  echo -e "$HOST_IP\t$HOST_DOMAIN" >> /etc/hosts
+fi
+ 
+exec "$@"
 
 ######
 echo "DO NOT FORGET, put Integrity Wireguard file in /etc/wireguard then run sudo wg-quick up integrity_vpn & sudo systemctl enable wg-quick@integrity_vpn"
