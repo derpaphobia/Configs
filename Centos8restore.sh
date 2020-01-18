@@ -106,12 +106,14 @@ sudo echo "/usr/bin/clamscan -i -r /home >> /home/derpa/ClamAV-logs/daily_scan.l
 ###
 # Docker rules
 ###
-sudo firewall-cmd --permanent --zone=trusted --change-interface=docker0
+
+sudo firewall-cmd --zone=public --add-masquerade --permanent
+sudo firewall-cmd --permanent --zone=public --change-interface=docker0
 sudo firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 4 -i docker0 -j ACCEPT
-sudo firewall-cmd --permanent --zone=trusted --add-port=80/tcp
-sudo firewall-cmd --permanent --zone=trusted --add-port=8080/tcp
-sudo firewall-cmd --permanent --zone=trusted --add-port=9000-9013/tcp
-sudo firewall-cmd --permanent --zone=trusted --add-port=3306/tcp
+sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
+sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
+sudo firewall-cmd --permanent --zone=public --add-port=9000-9013/tcp
+sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
 sudo firewall-cmd --reload
 sudo service docker restart
 
