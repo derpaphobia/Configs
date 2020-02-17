@@ -36,16 +36,11 @@ Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 
 " Color themes
-Plugin 'jnurmine/Zenburn'
-Plugin 'altercation/vim-colors-solarized'
-if has('gui_running')
- set background=dark
- colorscheme solarized
-else
- colorscheme zenburn
-endif
-
-call togglebg#map("<F5>")
+Plugin 'NLKNguyen/papercolor-theme'
+set t_Co=256   " This is may or may not needed.
+set background=dark
+set laststatus=2
+colorscheme PaperColor
 
 " File Browser
 Plugin 'scrooloose/nerdtree'
@@ -60,9 +55,14 @@ Plugin 'kien/ctrlp.vim'
 " Git integration
 Plugin 'tpope/vim-fugitive'
 
-" Powerline
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+" Airline
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+let g:airline_theme='papercolor'
+let g:airline_powerline_fonts = 1
 
+" Semshi syntax highlighting
+Plugin 'numirias/semshi'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -110,6 +110,8 @@ set splitright
 set encoding=utf-8
 let python_highlight_all=1
 set clipboard=unnamed
+set winheight=42
+nnoremap <c-t> :sp term://zsh<ENTER>
 
 "python with virtualenv support
 py3 << EOF
