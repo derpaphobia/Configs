@@ -28,7 +28,7 @@ set background=dark
 set laststatus=2
 colorscheme PaperColor
 
-" File Browser
+" " File Browser
 Plug 'scrooloose/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -40,6 +40,21 @@ let g:NERDTreeStatusline = ''
 Plug 'jistr/vim-nerdtree-tabs'
 " and icons
 Plug 'ryanoasis/vim-devicons'
+" Exit if only NERDTree is open
+function! s:CloseIfOnlyControlWinLeft()
+	if winnr("$") != 1
+		return
+	endif
+	if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+	      \ || &buftype == 'quickfix'
+	  q
+	endif
+endfunction
+augroup CloseIfOnlyControlWinLeft
+	au!
+	au BufEnter * call s:CloseIfOnlyControlWinLeft()
+augroup END
+
 
 " Git integration
 Plug 'tpope/vim-fugitive'
@@ -102,8 +117,6 @@ nmap <leader>a <Plug>(coc-codeaction-selected)
 autocmd BufRead scp://* :set bt=BufRead
 autocmd BufRead scp://* :set bt=BufWritePost
 
-" Terminal inside nvim
-" nnoremap <c-t> :sp term://zsh<ENTER>
 " start terminal in insert mode
 au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 " open terminal on ctrl+n
