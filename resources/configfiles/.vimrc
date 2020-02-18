@@ -1,3 +1,9 @@
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 
 " Plugs
@@ -8,11 +14,6 @@ let g:SimpylFold_docstring_preview=1
 
 " Autoindent
 Plug 'vim-scripts/indentpython.vim'
-
-" YouCompleteMe
-Plug 'Valloric/YouCompleteMe'
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " Syntastic
 Plug 'vim-syntastic/syntastic'
@@ -39,9 +40,6 @@ let g:NERDTreeStatusline = ''
 Plug 'jistr/vim-nerdtree-tabs'
 " and icons
 Plug 'ryanoasis/vim-devicons'
-
-" Super Search
-" Plug 'kien/ctrlp.vim'
 
 " Git integration
 Plug 'tpope/vim-fugitive'
@@ -98,6 +96,11 @@ set encoding=utf-8
 let python_highlight_all=1
 set clipboard=unnamed
 set winheight=42
+let mapleader=","
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
+autocmd BufRead scp://* :set bt=BufRead
+autocmd BufRead scp://* :set bt=BufWritePost
 
 " Terminal inside nvim
 " nnoremap <c-t> :sp term://zsh<ENTER>
