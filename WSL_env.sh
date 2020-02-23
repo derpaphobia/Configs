@@ -30,13 +30,16 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 curl -fLo ~/.vim/colors/PaperColor.vim --create-dirs \
 	https://raw.githubusercontent.com/NLKNguyen/papercolor-theme/master/colors/PaperColor.vim
-	
+
+sudo sed -i 's/sudo nano/sudo nvim/g' ~/.zshrc
+echo 'alias python="python3"' | sudo tee -a ~/.zshrc
+
 ### For ls_extended ###
 
 git clone https://github.com/Electrux/ccp4m.git ; cd ccp4m ; ./build.sh ; sudo mv bin/ccp4m /usr/local/bin/ccp4m ; cd
 git clone https://github.com/Electrux/ls_extended.git ; cd ls_extended ; ./build.sh ; sudo mv bin/ls_extended /usr/local/bin/ls_extended ; cd
 sudo rm -rf ls_extended ccp4m
-
+echo 'alias ls="ls_extended"' | sudo tee -a ~/.zshrc
 #######################
 
 echo '!!!DON'T forget to install a nerdfont and change default fonts in the emulator!!!'
