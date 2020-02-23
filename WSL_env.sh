@@ -3,7 +3,7 @@
 sudo add-apt-repository ppa:neovim-ppa/stable -y
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 sudo apt-get upgrade
-sudo apt-get install neovim curl wget zsh nodejs python3 python3-pip libboost-all-dev libyaml-cpp-dev libcurl4 libcurl4-openssl-dev -y
+sudo apt-get install neovim curl wget zsh nodejs python3 python3-pip libboost-all-dev libyaml-cpp-dev libcurl4 libcurl4-openssl-dev git cmake build-essential libgcrypt20-dev libyajl-dev libboost-all-dev libexpat1-dev libcppunit-dev binutils-dev debhelper zlib1g-dev dpkg-dev pkg-config -y
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install -y
@@ -33,6 +33,10 @@ curl -fLo ~/.vim/colors/PaperColor.vim --create-dirs \
 
 sudo sed -i 's/sudo nano/sudo nvim/g' ~/.zshrc
 echo 'alias python="python3"' | sudo tee -a ~/.zshrc
+
+### For Grive 2, a Google drive Cli interface ###
+git clone https://github.com/vitalif/grive2
+cd grive2 ; mkdir build ; cd build ; cmake .. ; make -j4 ; sudo make install ; cd ; rm -rf grive2/
 
 ### For ls_extended ###
 
