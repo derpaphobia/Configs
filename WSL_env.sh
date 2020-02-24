@@ -1,10 +1,5 @@
 #!/bin/bash
 
-### For Syncthing ###
-curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
-echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
-###
-
 ### Genie, systemd for wsl ##
 curl -s https://packagecloud.io/install/repositories/arkane-systems/wsl-translinux/script.deb.sh | sudo bash
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -14,7 +9,7 @@ sudo dpkg -i packages-microsoft-prod.deb
 sudo add-apt-repository ppa:neovim-ppa/stable -y
 curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 sudo apt-get upgrade ; sudo apt-get update
-sudo apt-get install neovim curl wget zsh nodejs python3 python3-pip libboost-all-dev libyaml-cpp-dev libcurl4 libcurl4-openssl-dev git cmake build-essential libgcrypt20-dev libyajl-dev libboost-all-dev libexpat1-dev libcppunit-dev binutils-dev debhelper zlib1g-dev dpkg-dev pkg-config syncthing dotnet-sdk-3.1 systemd-genie -y
+sudo apt-get install neovim curl wget zsh nodejs python3 python3-pip libboost-all-dev libyaml-cpp-dev libcurl4 libcurl4-openssl-dev git cmake build-essential libgcrypt20-dev libyajl-dev libboost-all-dev libexpat1-dev libcppunit-dev binutils-dev debhelper zlib1g-dev dpkg-dev pkg-config dotnet-sdk-3.1 systemd-genie -y
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install -y
