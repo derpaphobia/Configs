@@ -244,9 +244,6 @@ set splitright
 " Don't dispay mode in command line (airilne already shows it)
 set noshowmode
 
-" Set floating window to be slightly transparent
-set winbl=10
-
 " My Crap
 syntax on
 set wrapmargin=8
